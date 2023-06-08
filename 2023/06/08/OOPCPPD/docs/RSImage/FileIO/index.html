@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"cugwanghp.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="主要解决从图像文件读取数据到CRSImage对象的过程，遥感图像的文件格式参考BSQ&#x2F;BIL&#x2F;BIP格式说明  [TOC] 目标 何为File IO？本质上就是“蚂蚁搬家”，将硬盘（外存）上的数据复制到寄存器（内存）上来。  需求分析 事实上，文件存在硬盘上，也是有地址的，定义CRSImage这样一个类（对象）的Open成员函数，其目的就是要完成蚂蚁搬家的这个事情。在遥感图像">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Day 2 - Image File IO">
+<meta property="og:url" content="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/FileIO/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="主要解决从图像文件读取数据到CRSImage对象的过程，遥感图像的文件格式参考BSQ&#x2F;BIL&#x2F;BIP格式说明  [TOC] 目标 何为File IO？本质上就是“蚂蚁搬家”，将硬盘（外存）上的数据复制到寄存器（内存）上来。  需求分析 事实上，文件存在硬盘上，也是有地址的，定义CRSImage这样一个类（对象）的Open成员函数，其目的就是要完成蚂蚁搬家的这个事情。在遥感图像">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-08T08:35:06.262Z">
+<meta property="article:modified_time" content="2023-06-08T08:40:46.282Z">
+<meta property="article:author" content="Wanghp">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="RS">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/FileIO/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Day 2 - Image File IO | Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/FileIO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wanghp">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Day 2 - Image File IO
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-06-08 16:35:06 / 修改时间：16:40:46" itemprop="dateCreated datePublished" datetime="2023-06-08T16:35:06+08:00">2023-06-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E8%AF%BE%E8%AE%BE/" itemprop="url" rel="index"><span itemprop="name">C++课设</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E8%AF%BE%E8%AE%BE/RSImage/" itemprop="url" rel="index"><span itemprop="name">RSImage</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>主要解决从图像文件读取数据到CRSImage对象的过程，遥感图像的文件格式参考<a href="./RSImageFormat.md"><strong>BSQ&#x2F;BIL&#x2F;BIP格式说明</strong></a></p>
+</blockquote>
+<p>[TOC]</p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><blockquote>
+<p>何为File IO？本质上就是“蚂蚁搬家”，将硬盘（外存）上的数据复制到寄存器（内存）上来。</p>
+</blockquote>
+<h2 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h2><blockquote>
+<p>事实上，文件存在硬盘上，也是有地址的，定义CRSImage这样一个类（对象）的Open成员函数，其目的就是要完成蚂蚁搬家的这个事情。<br>在遥感图像处理的领域，有个不成文的约定，就是对于每一个数据文件，都有一个对这个遥感图像数据的说明，通常以.hdr为后缀。我们给的数据保护两个文件，一个是数据文件，名字为test.img；另一个是test.hdr，是描述test.img的文件，我们称之为元数据文件。请问，元数据文件test.hdr 和 test.img文件的名称有没有什么关联，知道test.img可否推算出test.hdr？<br>我们接下来，回放下“蚂蚁搬家”的过程，搬家之前，是不是要对搬家的对象有所知晓呢？比如你搬家的箱子的大小，多长、多宽，有多重，多多少个箱子等等；搬家之中，用拖车也好，搬家公司也好，你就开始逐个把箱子搬到一个新的地方；这其中，忘了一个细节，就是你在搬家之前，要不要把目的地收拾好，不然，没有位置可以存放这些箱子呢？那么通过这样一个流程，我们就可以类比读文件的一个过程，1）读取元数据文件，知道图像数据的参数；2）分配内存，为复制图像开辟空间；3）执行复制的过程，一段一段的搬运数据。</p>
+</blockquote>
+<h2 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h2><h3 id="1-CRSImage-的设计"><a href="#1-CRSImage-的设计" class="headerlink" title="1. CRSImage 的设计"></a>1. CRSImage 的设计</h3><p>我们为了实现CRSImage::Open()函数，我们的工作是读取文件内容，放置到内存中。那么我们就来先设计CRSImage的成员函数和成员变量。</p>
+<ul>
+<li><p>成员函数</p>
+<p>函数 CRSImage::Open 需要确定参数和返回值，我们是要把文件–&gt;内存，显然输入是什么，是文件存放的首地址。在C++中，我们是通过文件路径（字符串）来标识的。那么Open函数补充为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CRSImage::<span class="built_in">Open</span>(<span class="type">const</span> <span class="type">char</span>* lpstrPath);	<span class="comment">//const char* 字符串</span></span><br></pre></td></tr></table></figure>
+
+<p>​这个函数是否需要返回值，显然需要，万一文件损坏，传入的文件路径不正确等都会导致这个函数执行失败，因此这个函数就变为了：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">CRSImage::Open</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* lpstrPath)</span></span>;	<span class="comment">//const char* 字符串</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>成员变量<br>因为读的数据要存放起来，自然我们需要分配内存空间存放。但试想，我们在读取元数据之前，是否知道图像的行、列、波段等信息。显然是后面才知道的，故图像数据只能定义在堆空间上，通过new的方式，来分配。我们假定图像是多个波段，用3维数组来描述，并假定数据类型是unsigned char。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">char</span>***		m_pppData;	<span class="comment">//三维数组</span></span><br><span class="line"><span class="type">int</span>				m_nBands;			<span class="comment">//波段数</span></span><br><span class="line"><span class="type">int</span>				m_nLines;			<span class="comment">//行数</span></span><br><span class="line"><span class="type">int</span>				m_nSamples;			<span class="comment">//列数</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>class CRSImage Code</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CRSImage</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">CRSImage</span>();</span><br><span class="line">	~<span class="built_in">CRSImage</span>();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Operations</span></span><br><span class="line">	<span class="function"><span class="type">bool</span>	<span class="title">Open</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* lpstrPath)</span></span>;</span><br><span class="line"> <span class="keyword">protected</span>:</span><br><span class="line">  	<span class="type">unsigned</span> <span class="type">char</span>***	m_pppData;	<span class="comment">//三维数组</span></span><br><span class="line">	<span class="type">int</span>				m_nBands;		<span class="comment">//波段数</span></span><br><span class="line">	<span class="type">int</span>				m_nLines;		<span class="comment">//行数</span></span><br><span class="line">	<span class="type">int</span>				m_nSamples;		<span class="comment">//列数</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-Open函数的实现"><a href="#2-Open函数的实现" class="headerlink" title="2. Open函数的实现"></a>2. Open函数的实现</h3><p>在实现Open函数之前，我们先前考虑的读文件的功能、步骤。我们先写一段类似的伪代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Operations</span></span><br><span class="line"><span class="function"><span class="type">bool</span>	<span class="title">CRSImage::Open</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* lpstrPath)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">//0. 参数合法性判断，如果调用者给你一个不合法的文件路径，怎么办，需要先行判断</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="literal">NULL</span> == lpstrPath)	<span class="comment">//文件路径不合法，返回false</span></span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Step1. 读元数据文件，要知道图像数据的行、列、波段等信息</span></span><br><span class="line">  <span class="comment">// Q1：元数据文件是什么？还记得前面讲过的元数据文件路径与图像文件路径的关联吗？</span></span><br><span class="line">  <span class="comment">// Q2: 读取元数据文件，想想就觉得这是一个繁琐而复杂的过程，怎么办呢？我们可以封装一个函数</span></span><br><span class="line">  <span class="keyword">if</span> (!<span class="built_in">ReadMetaData</span>(<span class="type">const</span> <span class="type">char</span>*))	<span class="comment">//元数据文件路径</span></span><br><span class="line">  	<span class="keyword">return</span> <span class="literal">false</span>;		<span class="comment">//读文件失败</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Step 2. 分配内存，来存文件</span></span><br><span class="line">  <span class="comment">// 我们给的测试数据是一个6波段的图像，是一个三维数组，三维数组怎么分配内存呢？貌似一两行代码搞不定，怎么办呢？封装函数</span></span><br><span class="line">  <span class="keyword">if</span> (!<span class="built_in">InitBuffer</span>())	<span class="comment">//new一个三维数组，记住，有new就有释放，所以一定要考虑清楚释</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Step 3. 读图像数据文件，真正地“搬家”</span></span><br><span class="line">  <span class="keyword">if</span> (!<span class="built_in">ReadImgData</span>(lpstrPath))	<span class="comment">//读文件</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 最后返回成功</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上述的分析来看，Open函数还没写完，就多出了3个辅助函数，来帮助我们完成Open的功能。这样，CRSImage的定义就变成了：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CRSImage</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">CRSImage</span>();</span><br><span class="line">	~<span class="built_in">CRSImage</span>();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Operations</span></span><br><span class="line">	<span class="function"><span class="type">bool</span>	<span class="title">Open</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* lpstrPath)</span></span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">protected</span>:</span><br><span class="line">  	<span class="function"><span class="type">bool</span>	<span class="title">ReadMetaData</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* lpstrMetaFilePath)</span></span>;</span><br><span class="line">	<span class="function"><span class="type">bool</span>	<span class="title">InitBuffer</span><span class="params">(<span class="type">void</span>)</span></span>;</span><br><span class="line">	<span class="function"><span class="type">bool</span>	<span class="title">ReadImgData</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* lpstrImgFilePath)</span></span>;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">protected</span>:</span><br><span class="line">  	<span class="type">unsigned</span> <span class="type">char</span>***	m_pppData;	<span class="comment">//三维数组</span></span><br><span class="line">	<span class="type">int</span>				m_nBands;		<span class="comment">//波段数</span></span><br><span class="line">	<span class="type">int</span>				m_nLines;		<span class="comment">//行数</span></span><br><span class="line">	<span class="type">int</span>				m_nSamples;		<span class="comment">//列数</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Question: 为何要将新增的3个函数设置为protected权限，而不是public权限呢？</p>
+</blockquote>
+<h3 id="3-实现各个子函数"><a href="#3-实现各个子函数" class="headerlink" title="3. 实现各个子函数"></a>3. 实现各个子函数</h3><h4 id="3-1-ReadMetaData-函数"><a href="#3-1-ReadMetaData-函数" class="headerlink" title="3.1 ReadMetaData 函数"></a>3.1 ReadMetaData 函数</h4><p>元数据文件是一个明码的文件，即ASCII文件，也称为文本文件。用notepad打开，是可以看到里面的内容是由一个一个字符组成。接下来，我们以ReadMetaData的源码为例，解释下文件流的使用。</p>
+<ul>
+<li>首先是元数据文件路径的由来</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Meta Data File Path</span></span><br><span class="line"><span class="comment">// d:\\test.img -&gt; d:\\test.hdr</span></span><br><span class="line"><span class="comment">// d:\\test -&gt; d:\\test.hdr</span></span><br><span class="line">string		strMetaFilePath = lpstrPath;</span><br><span class="line"><span class="comment">//元数据文件路径的推导是：1）检查数据文件中有无字符&#x27;.&#x27;，我们用的是rfind，意思是从后往前找，如果找到了，就把字符&#x27;.&#x27;在字符串中所做的index返回出来，没有找到就返回-1；2）index从0开始，取pos个字符，正好取到d:\\test；3）在后面加上.hdr,变成了d:\\test.hdr</span></span><br><span class="line"><span class="type">int</span>			pos = strMetaFilePath.<span class="built_in">rfind</span>(<span class="string">&#x27;.&#x27;</span>);	<span class="comment">//反向查找</span></span><br><span class="line"><span class="keyword">if</span> (pos&gt;=<span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">  strMetaFilePath = strMetaFilePath.<span class="built_in">substr</span>(<span class="number">0</span>, pos);	<span class="comment">//取子串，把&#x27;.&#x27;之后的字符都删除掉</span></span><br><span class="line">&#125;</span><br><span class="line">strMetaFilePath.<span class="built_in">append</span>(<span class="string">&quot;.hdr&quot;</span>);	<span class="comment">//添加&quot;.hdr&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>读文本文件</li>
+</ul>
+<blockquote>
+<p>在此之前我们先交代几个概念：</p>
+<p>1）流-stream</p>
+<p>事实上，大家对stream并不陌生，用的最多的是iostream，即cout、cin。在此处我们用到另外2类stream，一个是file stream，一个是string stream。</p>
+<p>首先我们理解下cin 作为一种标准的input stream 的过程。比如：int a; cin&gt;&gt;a; 这么简单的代码是如何实现的呢？cin&gt;&gt;a;会等待用户输入一串键盘，回车的时候，传入到变量a中。比如我们在键盘上输入“1”、“2”、“3”然后回车，系统读入的是什么，其实是ASCII码，即“123”字符串，cin充当了一个翻译器，将其转换成了123。既然如此，我们能否将一个字符串“123”转换为123呢？当然可以，因为其原理一样，只是字符串的来源不同罢了，一个来源于键盘的输入，一个来源于字符串。另外一个是file stream，就是我们打开元数据文件test.hdr中看到的内容，也可以直接读取到变量中来。</p>
+<p>stream 有一个特点，就是具有缓冲池。每个程序都想往屏幕输出内容，同一时刻都输出来，会互相“打架”，争夺屏幕绘制的权利，这个时候就采用了一种“缓冲池”的机制，就行如大家在12306上买票，你提交了买票的订单，12306后台并没有理解出票，而是有一个排队的过程，然后后台一个一个的处理。这样就避免了同时买票，导致12306服务器崩溃。</p>
+<p>2）file -stream</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/////////////////////////////////////////////////////////////////////</span></span><br><span class="line"><span class="comment">// 读取元数据文件</span></span><br><span class="line"><span class="comment">/////////////////////////////////////////////////////////////////////</span></span><br><span class="line"><span class="function"><span class="type">bool</span>	<span class="title">CRSImage::ReadMetaData</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* lpstrMetaFilePath)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ifstream    ifs;		<span class="comment">//input file stream</span></span><br><span class="line">    string      strLine;</span><br><span class="line">    string      strSubTxt;</span><br><span class="line">    stringstream    ss;		<span class="comment">//string stream</span></span><br><span class="line"></span><br><span class="line">    <span class="type">char</span>        sBuff[<span class="number">260</span>];</span><br><span class="line"></span><br><span class="line">	ifs.<span class="built_in">open</span>(lpstrMetaFilePath, ios_base::in);</span><br><span class="line">    <span class="keyword">if</span> (!ifs.<span class="built_in">is_open</span>())</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(!ifs.<span class="built_in">eof</span>())   <span class="comment">//end of file</span></span><br><span class="line">    &#123;</span><br><span class="line">        ifs.<span class="built_in">getline</span>(sBuff, <span class="number">260</span>);</span><br><span class="line">        strLine = sBuff;</span><br><span class="line"></span><br><span class="line">        ss.<span class="built_in">clear</span>();</span><br><span class="line">        ss.<span class="built_in">str</span>(strLine);    <span class="comment">//&quot;samples = 640&quot;</span></span><br><span class="line">        ss &gt;&gt; strSubTxt;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (strSubTxt == <span class="string">&quot;samples&quot;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ss &gt;&gt; strSubTxt &gt;&gt; m_nSamples;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (strSubTxt == <span class="string">&quot;lines&quot;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ss &gt;&gt; strSubTxt &gt;&gt; m_nLines;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (strSubTxt == <span class="string">&quot;bands&quot;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ss &gt;&gt; strSubTxt &gt;&gt; m_nBands;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (strSubTxt == <span class="string">&quot;interleave&quot;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ss &gt;&gt; strSubTxt &gt;&gt; strSubTxt;</span><br><span class="line">            <span class="keyword">if</span> (strSubTxt == <span class="string">&quot;bsq&quot;</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                m_eInterleave = BSQ;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (strSubTxt == <span class="string">&quot;bip&quot;</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                m_eInterleave = BIP;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (strSubTxt == <span class="string">&quot;bil&quot;</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                m_eInterleave = BIL;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// blank</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (strSubTxt == <span class="string">&quot;data&quot;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ss &gt;&gt; strSubTxt;</span><br><span class="line">            <span class="keyword">if</span>(strSubTxt == <span class="string">&quot;type&quot;</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                ss &gt;&gt; strSubTxt &gt;&gt; m_nDataType;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// blank</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Operations</span></span><br><span class="line"><span class="function"><span class="type">bool</span>	<span class="title">CRSImage::Open</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* lpstrPath)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="literal">NULL</span> == lpstrPath)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 1. Read Meta Data</span></span><br><span class="line">	string		strMetaFilePath = lpstrPath;</span><br><span class="line">	<span class="type">int</span>				pos = strMetaFilePath.<span class="built_in">rfind</span>(<span class="string">&#x27;.&#x27;</span>);</span><br><span class="line">	<span class="keyword">if</span> (pos&gt;=<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        strMetaFilePath = strMetaFilePath.<span class="built_in">substr</span>(<span class="number">0</span>, pos);</span><br><span class="line">    &#125;</span><br><span class="line">	strMetaFilePath.<span class="built_in">append</span>(<span class="string">&quot;.hdr&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span> (!<span class="built_in">ReadMetaData</span>(strMetaFilePath.<span class="built_in">c_str</span>()))</span><br><span class="line">	&#123;</span><br><span class="line">		cerr &lt;&lt; <span class="string">&quot;Read Meta Data Failed.&quot;</span> &lt;&lt; endl;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 2. Initialize Buffer</span></span><br><span class="line">	<span class="keyword">if</span> (!<span class="built_in">InitBuffer</span>())</span><br><span class="line">	&#123;</span><br><span class="line">		cerr &lt;&lt; <span class="string">&quot;Initialize Buffer Failed.&quot;</span> &lt;&lt; endl;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 3. Read File</span></span><br><span class="line">	<span class="keyword">if</span> (!<span class="built_in">ReadImgData</span>(lpstrPath))</span><br><span class="line">	&#123;</span><br><span class="line">		cerr &lt;&lt; <span class="string">&quot;Read Image Data Failed.&quot;</span> &lt;&lt; endl;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>| <a href="./README.md">Home</a> | <a href="./Subject.md">课设题目</a> | <a href="./Frame.md">&lt;-Prev</a> | <a href="./Information.md">-&gt;Next</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+              <a href="/tags/RS/" rel="tag"># RS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/08/OOPCPPD/docs/RSImage/Display_EasyX/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/06/08/OOPCPPD/docs/RSImage/Filter/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87"><span class="nav-number">1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">需求分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.</span> <span class="nav-text">实现步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-CRSImage-%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.1.</span> <span class="nav-text">1. CRSImage 的设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Open%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.2.</span> <span class="nav-text">2. Open函数的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%AE%9E%E7%8E%B0%E5%90%84%E4%B8%AA%E5%AD%90%E5%87%BD%E6%95%B0"><span class="nav-number">3.3.</span> <span class="nav-text">3. 实现各个子函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-ReadMetaData-%E5%87%BD%E6%95%B0"><span class="nav-number">3.3.1.</span> <span class="nav-text">3.1 ReadMetaData 函数</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Wanghp</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wanghp</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

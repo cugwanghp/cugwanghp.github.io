@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"cugwanghp.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="遥感图像处理程序 功能需求 编写一个遥感图像处理控制台程序，要求在控制台上输入字母菜单，执行相应的功能，详见示例说明。 构建GUI界面程序完成相应的功能移植。 要求用类对象，实现主体功能。  其功能项如下：    序号 功能菜单 功能 备注    00 X – Exit 退出程序 必做   01 O – Open Image 输入图像文件路径，即可读入文件数据 必做   02 I – Inform">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Blog">
+<meta property="og:url" content="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/Subject/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="遥感图像处理程序 功能需求 编写一个遥感图像处理控制台程序，要求在控制台上输入字母菜单，执行相应的功能，详见示例说明。 构建GUI界面程序完成相应的功能移植。 要求用类对象，实现主体功能。  其功能项如下：    序号 功能菜单 功能 备注    00 X – Exit 退出程序 必做   01 O – Open Image 输入图像文件路径，即可读入文件数据 必做   02 I – Inform">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-08T08:35:06.296Z">
+<meta property="article:modified_time" content="2021-06-11T00:58:17.323Z">
+<meta property="article:author" content="Wanghp">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/Subject/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/Subject/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wanghp">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-06-08 16:35:06" itemprop="dateCreated datePublished" datetime="2023-06-08T16:35:06+08:00">2023-06-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-11 08:58:17" itemprop="dateModified" datetime="2021-06-11T08:58:17+08:00">2021-06-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="遥感图像处理程序"><a href="#遥感图像处理程序" class="headerlink" title="遥感图像处理程序"></a>遥感图像处理程序</h1><hr>
+<h2 id="功能需求"><a href="#功能需求" class="headerlink" title="功能需求"></a>功能需求</h2><ol>
+<li>编写一个遥感图像处理控制台程序，要求在控制台上输入字母菜单，执行相应的功能，详见<a href="./RSCmdManual.md"><strong>示例说明</strong></a>。</li>
+<li>构建GUI界面程序完成相应的功能移植。</li>
+<li>要求用类对象，实现主体功能。</li>
+</ol>
+<p>其功能项如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">序号</th>
+<th align="left">功能菜单</th>
+<th align="center">功能</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">00</td>
+<td align="left">X – Exit</td>
+<td align="center">退出程序</td>
+<td><strong>必做</strong></td>
+</tr>
+<tr>
+<td align="center">01</td>
+<td align="left">O – Open Image</td>
+<td align="center">输入图像文件路径，即可读入文件数据</td>
+<td><strong>必做</strong></td>
+</tr>
+<tr>
+<td align="center">02</td>
+<td align="left">I – Information</td>
+<td align="center">输出当前图像的路径，行列值、波段数、数据类型、排列方式等</td>
+<td><strong>必做</strong></td>
+</tr>
+<tr>
+<td align="center">03</td>
+<td align="left">C –Close Image</td>
+<td align="center">关闭当前图像</td>
+<td><strong>必做</strong></td>
+</tr>
+<tr>
+<td align="center">04</td>
+<td align="left">S – Statistics</td>
+<td align="center">输出图像数据统计量，文件未打开，输出提示</td>
+<td><strong>必做</strong></td>
+</tr>
+<tr>
+<td align="center">05</td>
+<td align="left">H – Histogram</td>
+<td align="center">输出图像的直方图</td>
+<td><strong>必做</strong></td>
+</tr>
+<tr>
+<td align="center">06</td>
+<td align="left">? – Help</td>
+<td align="center">输出本信息</td>
+<td><strong>必做</strong></td>
+</tr>
+<tr>
+<td align="center">07</td>
+<td align="left">A – Save as File</td>
+<td align="center">输入保存的文件路径，输出图像为二进制文件</td>
+<td><strong>必做</strong></td>
+</tr>
+<tr>
+<td align="center">08</td>
+<td align="left">Z – Zoom</td>
+<td align="center">图像缩放，输入缩放比例尺，输出缩放图像</td>
+<td><strong>必做</strong></td>
+</tr>
+<tr>
+<td align="center">09</td>
+<td align="left">R – Rotate Image</td>
+<td align="center">图像旋转，输入旋转角度，逆时针旋转图像</td>
+<td><em>选做</em></td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="left">F - Filter</td>
+<td align="center">输入滤波核，执行滤波，输出滤波后图像</td>
+<td><em>选做</em></td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="left">GUI</td>
+<td align="center">使用界面库，如Qt等构建GUI程序，移植已有功能</td>
+<td><em>选做</em></td>
+</tr>
+</tbody></table>
+<h2 id="功能描述"><a href="#功能描述" class="headerlink" title="功能描述"></a>功能描述</h2><p>以下功能描述均在程序启动之后的描述。</p>
+<h3 id="O-–-Open-Image"><a href="#O-–-Open-Image" class="headerlink" title="O – Open Image"></a><strong>O – Open Image</strong></h3><p><strong>功能描述：</strong>在控制台输入字符<strong>O</strong>或<strong>o</strong>，程序提示输入图像文件路径，回车后，读取指定图像文件。<br><strong>返回值：</strong>要求返回错误码，0-为读取成功。<br><strong>程序流程：</strong>1）读取图像文件头，得到行、列、波段数、排列方式、数据类型等信息；2）动态分配图像数据内存，文件IO读取二进制流。</p>
+<h3 id="I-–-Information"><a href="#I-–-Information" class="headerlink" title="I – Information"></a><strong>I – Information</strong></h3><p><strong>功能描述：</strong>在控制台输入字符<strong>I</strong>或<strong>i</strong>，若图像已经打开，输出图像相关统计信息。<br><strong>返回值：</strong>错误则输出错误信息，成功则输出图像信息。<br><strong>程序流程：</strong>1）若图像文件打开，则输出图像路径行、列、波段数、排列方式、数据类型等信息到控制台。输出内容有：</p>
+<blockquote>
+<p>路径：c:\test.img<br>行： 400<br>列： 400<br>波段：6<br>…</p>
+</blockquote>
+<h3 id="C-–Close-Image"><a href="#C-–Close-Image" class="headerlink" title="C –Close Image"></a><strong>C –Close Image</strong></h3><p><strong>功能描述：</strong>在控制台输入字符<strong>C</strong>或<strong>c</strong>，关闭当前打开的文件。</p>
+<p><strong>返回值：</strong>错误则返回错误信息，正确，返回0。</p>
+<p><strong>程序流程：</strong>释放图像数据存储空间。</p>
+<h3 id="X-–-Exit"><a href="#X-–-Exit" class="headerlink" title="X – Exit"></a><strong>X – Exit</strong></h3><p><strong>功能描述：</strong>在控制台输入字符<strong>X</strong>或<strong>x</strong>，程序退出。</p>
+<p><strong>返回值：</strong>返回0。</p>
+<p><strong>程序流程：</strong>释放所有对象，程序退出。</p>
+<h3 id="？–-Help"><a href="#？–-Help" class="headerlink" title="？– Help"></a><strong>？– Help</strong></h3><p><strong>功能描述：</strong>在控制台输入字符**?**，程序输出菜单信息。</p>
+<p><strong>返回值：</strong>返回0。</p>
+<p><strong>程序流程：</strong>显示菜单信息。</p>
+<h3 id="A-–-Save-as-File"><a href="#A-–-Save-as-File" class="headerlink" title="A – Save as File"></a><strong>A – Save as File</strong></h3><p><strong>功能描述：</strong>在控制台输入字符<strong>A</strong>或<strong>a</strong>，提示输入另存文件路径，写数据文件。</p>
+<p><strong>返回值：</strong>错误-错误信息；正确-返回success。</p>
+<p><strong>程序流程：</strong>1）写二进制流文件。</p>
+<h3 id="S-–-Statistics"><a href="#S-–-Statistics" class="headerlink" title="S – Statistics"></a><strong>S – Statistics</strong></h3><p><strong>功能描述：</strong>在控制台输入字符<strong>S</strong>或<strong>s</strong>，输出当前图像文件的统计信息；图像文件未打开，则返回提示信息。</p>
+<p><strong>返回值：</strong>错误-错误信息&#x2F;正确-返回success。</p>
+<p><strong>程序流程：</strong>1）遍历图像数据；2）统计相关信息（均值、方差、最大值、最小值）</p>
+<h3 id="H-–-Histogram"><a href="#H-–-Histogram" class="headerlink" title="H – Histogram"></a><strong>H – Histogram</strong></h3><p><strong>功能描述：</strong>在控制台输入字符<strong>H</strong>或<strong>h</strong>，输出当前图像的直方图信息；图像文件未打开，则返回提示信息。</p>
+<p><strong>返回值：</strong>错误-错误信息&#x2F;正确-返回success。</p>
+<p><strong>程序流程：</strong>1）遍历图像各个波段数据；2）统计直方图</p>
+<h3 id="R-–-Rotate-Image"><a href="#R-–-Rotate-Image" class="headerlink" title="R – Rotate Image"></a><strong>R – Rotate Image</strong></h3><p><strong>功能描述：</strong>在控制台输入字符<strong>R</strong>或<strong>r</strong>，提示输入旋转角度（0-360°），将图像逆时针旋转指定角度。</p>
+<p><strong>返回值：</strong>返回0。</p>
+<p><strong>程序流程：</strong>1）输入旋转角度（0—360°）；2）旋转图像。</p>
+<h3 id="Z-–-Zoom"><a href="#Z-–-Zoom" class="headerlink" title="Z – Zoom"></a><strong>Z – Zoom</strong></h3><p><strong>功能描述：</strong>在控制台输入字符<strong>Z</strong>或<strong>z</strong>，提示输入缩放比例，缩放图像。</p>
+<p><strong>返回值：</strong>返回0。</p>
+<p><strong>程序流程：</strong>1）输入缩放比例；2）执行图像缩放。 </p>
+<h3 id="F-–-Filter"><a href="#F-–-Filter" class="headerlink" title="F – Filter"></a><strong>F – Filter</strong></h3><p><strong>功能描述：</strong>在控制台输入字符<strong>F</strong>或<strong>f</strong>，提示输入滤波核，执行图像卷积。</p>
+<p><strong>返回值：</strong>返回0。</p>
+<p><strong>程序流程：</strong>1）输入滤波核；2）执行图像卷积。</p>
+<hr>
+<p><a href="./README.md">Home</a> | <a href="#%E9%81%A5%E6%84%9F%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F">Head</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/08/OOPCPPD/docs/RSImage/Statistics/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/06/08/OOPCPPD/png/RSCmdManual/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%81%A5%E6%84%9F%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.</span> <span class="nav-text">遥感图像处理程序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82"><span class="nav-number">1.1.</span> <span class="nav-text">功能需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.2.</span> <span class="nav-text">功能描述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#O-%E2%80%93-Open-Image"><span class="nav-number">1.2.1.</span> <span class="nav-text">O – Open Image</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-%E2%80%93-Information"><span class="nav-number">1.2.2.</span> <span class="nav-text">I – Information</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-%E2%80%93Close-Image"><span class="nav-number">1.2.3.</span> <span class="nav-text">C –Close Image</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#X-%E2%80%93-Exit"><span class="nav-number">1.2.4.</span> <span class="nav-text">X – Exit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%9F%E2%80%93-Help"><span class="nav-number">1.2.5.</span> <span class="nav-text">？– Help</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A-%E2%80%93-Save-as-File"><span class="nav-number">1.2.6.</span> <span class="nav-text">A – Save as File</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#S-%E2%80%93-Statistics"><span class="nav-number">1.2.7.</span> <span class="nav-text">S – Statistics</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#H-%E2%80%93-Histogram"><span class="nav-number">1.2.8.</span> <span class="nav-text">H – Histogram</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#R-%E2%80%93-Rotate-Image"><span class="nav-number">1.2.9.</span> <span class="nav-text">R – Rotate Image</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Z-%E2%80%93-Zoom"><span class="nav-number">1.2.10.</span> <span class="nav-text">Z – Zoom</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#F-%E2%80%93-Filter"><span class="nav-number">1.2.11.</span> <span class="nav-text">F – Filter</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Wanghp</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wanghp</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

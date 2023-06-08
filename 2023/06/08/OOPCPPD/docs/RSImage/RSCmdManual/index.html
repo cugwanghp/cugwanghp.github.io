@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"cugwanghp.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD0. 操作视频 01.MainFrame 02.OpenData 02-1.Open 03.Display         b100a54beaa4bf406d7a4142f3f6914e85d940fe        1. Introduction RSCmd and Data RSCmd.rar   压缩包，包含着RSCmd.e">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RSCmd Manual">
+<meta property="og:url" content="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/RSCmdManual/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD0. 操作视频 01.MainFrame 02.OpenData 02-1.Open 03.Display         b100a54beaa4bf406d7a4142f3f6914e85d940fe        1. Introduction RSCmd and Data RSCmd.rar   压缩包，包含着RSCmd.e">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cugwanghp.github.io/png/hdr.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/WinR.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/Console.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/RSCmd.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/RSCmdFace.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/Open.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/StatisticsCmd.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/Statistics.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/HistogramCmd.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/Histogram.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/NormalCmd.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/Normal.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/LinearDispCmd.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/LinearDisp.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/GrayCmd.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/Gray.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/MeanFilterCmd.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/MeanFilter3.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/FilterCmd.png">
+<meta property="og:image" content="https://cugwanghp.github.io/png/FilterRes.png">
+<meta property="article:published_time" content="2023-06-08T08:35:06.288Z">
+<meta property="article:modified_time" content="2023-06-08T08:42:26.261Z">
+<meta property="article:author" content="Wanghp">
+<meta property="article:tag" content="RS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cugwanghp.github.io/png/hdr.png">
+
+<link rel="canonical" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/RSCmdManual/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>RSCmd Manual | Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/RSCmdManual/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wanghp">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RSCmd Manual
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-06-08 16:35:06 / 修改时间：16:42:26" itemprop="dateCreated datePublished" datetime="2023-06-08T16:35:06+08:00">2023-06-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E8%AF%BE%E8%AE%BE/" itemprop="url" rel="index"><span itemprop="name">C++课设</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E8%AF%BE%E8%AE%BE/RSImage/" itemprop="url" rel="index"><span itemprop="name">RSImage</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="lt-lt-lt-lt-lt-lt-lt-HEAD"><a href="#lt-lt-lt-lt-lt-lt-lt-HEAD" class="headerlink" title="&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD"></a>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</h1><h2 id="0-操作视频"><a href="#0-操作视频" class="headerlink" title="0. 操作视频"></a>0. 操作视频</h2><ul>
+<li><a href="../../videos/01.RSCmd_MainFrame.avi">01.MainFrame</a></li>
+<li><a href="../../videos/02.RSCmd_OpenData.avi">02.OpenData</a></li>
+<li><a href="02.RSCmd_2_Open.avi">02-1.Open</a></li>
+<li><a href="03.RSCmd_Display.avi">03.Display</a></li>
+</ul>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>b100a54beaa4bf406d7a4142f3f6914e85d940fe</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="1-Introduction-RSCmd-and-Data"><a href="#1-Introduction-RSCmd-and-Data" class="headerlink" title="1. Introduction RSCmd and Data"></a>1. Introduction RSCmd and Data</h2><ul>
+<li>RSCmd.rar</li>
+</ul>
+<blockquote>
+<p>压缩包，包含着RSCmd.exe和数据test.hdr, test.img。</p>
+</blockquote>
+<ul>
+<li>RSCmd.exe</li>
+</ul>
+<blockquote>
+<p>可执行程序，即源代码编译链接后的输出结果。</p>
+</blockquote>
+<ul>
+<li>test.hdr</li>
+</ul>
+<blockquote>
+<p>图像元数据文件，描述图像数据的数据，是ASCII文件，用记事本(notepad)或Notepad++，EditPlus等工具打开即可看到相关内容。打开示意图如下：</p>
+</blockquote>
+<p><img src="/../../png/hdr.png" alt="test_hdr"></p>
+<ul>
+<li>test.img</li>
+</ul>
+<blockquote>
+<p>图像数据文件，图像二进制流，按照排列顺序，一个一个像素顺序排列的文件。</p>
+</blockquote>
+<h2 id="2-How-to-Execute-RSCmd"><a href="#2-How-to-Execute-RSCmd" class="headerlink" title="2. How to Execute RSCmd"></a>2. How to Execute RSCmd</h2><ul>
+<li>Win+R - Windows图标+R</li>
+</ul>
+<p>弹出运行框，输入cmd，执行，弹出控制台窗口</p>
+<p><img src="/../../png/WinR.png" alt="WinR"></p>
+<p><img src="/../../png/Console.png" alt="Console"></p>
+<ul>
+<li>Execute RSCmd</li>
+</ul>
+<blockquote>
+<p>输入如下的命令行，即可启动程序</p>
+</blockquote>
+<p><img src="/../../png/RSCmd.png" alt="RSCmd"></p>
+<ul>
+<li>RSCmd.exe</li>
+</ul>
+<blockquote>
+<p>程序界面如下：</p>
+</blockquote>
+<p><img src="/../../png/RSCmdFace.png" alt="RSCmdFace"></p>
+<h2 id="3-Command-Line"><a href="#3-Command-Line" class="headerlink" title="3. Command Line"></a>3. Command Line</h2><h3 id="3-1-Open"><a href="#3-1-Open" class="headerlink" title="3.1 Open"></a>3.1 Open</h3><ul>
+<li>Open Command</li>
+</ul>
+<p><img src="/../../png/Open.png" alt="Open"></p>
+<h3 id="3-2-Statistics"><a href="#3-2-Statistics" class="headerlink" title="3.2 Statistics"></a>3.2 Statistics</h3><ul>
+<li>Command Line</li>
+</ul>
+<p><img src="/../../png/StatisticsCmd.png" alt="StatisticsCmd"></p>
+<ul>
+<li>Output</li>
+</ul>
+<p><img src="/../../png/Statistics.png" alt="Statistics"></p>
+<h3 id="3-3-Histogram"><a href="#3-3-Histogram" class="headerlink" title="3.3 Histogram"></a>3.3 Histogram</h3><ul>
+<li>Command Line</li>
+</ul>
+<p><img src="/../../png/HistogramCmd.png" alt="HistCmd"></p>
+<ul>
+<li>Output Histogram</li>
+</ul>
+<p><img src="/../../png/Histogram.png" alt="Histogram"></p>
+<h3 id="3-4-Display"><a href="#3-4-Display" class="headerlink" title="3.4 Display"></a>3.4 Display</h3><ul>
+<li>Command Line</li>
+</ul>
+<p><img src="/../../png/NormalCmd.png" alt="NormalDisp"></p>
+<ul>
+<li>Output Image:</li>
+</ul>
+<p><img src="/../../png/Normal.png" alt="Normal"></p>
+<ul>
+<li>Linear Stretch</li>
+</ul>
+<p><img src="/../../png/LinearDispCmd.png" alt="LinearDispCmd"></p>
+<ul>
+<li>Linear stretch Display</li>
+</ul>
+<p><img src="/../../png/LinearDisp.png" alt="LinearDisp"></p>
+<ul>
+<li>Gray Display Command Line</li>
+</ul>
+<p><img src="/../../png/GrayCmd.png" alt="GrayCmd"></p>
+<ul>
+<li>Output: Gray Display</li>
+</ul>
+<p><img src="/../../png/Gray.png" alt="Gray"></p>
+<ul>
+<li><strong>试着改变波段组合，显示不同的伪彩色图像</strong></li>
+</ul>
+<h3 id="3-5-Filter"><a href="#3-5-Filter" class="headerlink" title="3.5 Filter"></a>3.5 Filter</h3><ul>
+<li>Filter Command Line</li>
+</ul>
+<p><img src="/../../png/MeanFilterCmd.png" alt="MeanFilterCmd"></p>
+<ul>
+<li>Image Filtered</li>
+</ul>
+<p><img src="/../../png/MeanFilter3.png" alt="MeanFilter"></p>
+<ul>
+<li><p><strong>试着改变滤波核的大小，看看图像会有哪些变化。</strong></p>
+</li>
+<li><p>自定义滤波</p>
+</li>
+</ul>
+<p><img src="/../../png/FilterCmd.png" alt="FilterCmd"></p>
+<ul>
+<li>Image Filtered</li>
+</ul>
+<p><img src="/../../png/FilterRes.png" alt="FilterRes"></p>
+<ul>
+<li><strong>自定义输入滤波核，观察图像的变化！</strong></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RS/" rel="tag"># RS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/08/OOPCPPD/docs/RSImage/README/" rel="prev" title="遥感图像处理程序">
+      <i class="fa fa-chevron-left"></i> 遥感图像处理程序
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/06/08/OOPCPPD/docs/RSImage/RSImageFormat/" rel="next" title="RS Image Format">
+      RS Image Format <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#lt-lt-lt-lt-lt-lt-lt-HEAD"><span class="nav-number">1.</span> <span class="nav-text">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-%E6%93%8D%E4%BD%9C%E8%A7%86%E9%A2%91"><span class="nav-number">1.1.</span> <span class="nav-text">0. 操作视频</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Introduction-RSCmd-and-Data"><span class="nav-number">1.2.</span> <span class="nav-text">1. Introduction RSCmd and Data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-How-to-Execute-RSCmd"><span class="nav-number">1.3.</span> <span class="nav-text">2. How to Execute RSCmd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Command-Line"><span class="nav-number">1.4.</span> <span class="nav-text">3. Command Line</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Open"><span class="nav-number">1.4.1.</span> <span class="nav-text">3.1 Open</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-Statistics"><span class="nav-number">1.4.2.</span> <span class="nav-text">3.2 Statistics</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-Histogram"><span class="nav-number">1.4.3.</span> <span class="nav-text">3.3 Histogram</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-Display"><span class="nav-number">1.4.4.</span> <span class="nav-text">3.4 Display</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-Filter"><span class="nav-number">1.4.5.</span> <span class="nav-text">3.5 Filter</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Wanghp</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wanghp</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
