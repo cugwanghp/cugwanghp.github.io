@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"cugwanghp.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本次实习的目标是掌握Qt的IDE开发环境、Qt开发的基本框架，学习Qt示例工程imageviewer，掌握GUI程序的基本要素：视图、菜单、工具栏等。 目录 1. VS Qt Plugin 2. QtCreator 3. 示例代码  1. VS Qt PluginQt为VS安装了插件之后，VS菜单会出现Qt菜单项，界面如下： 2. QtCreatorQtCreator是类似VS的IDE开发环境。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实习&lt;一&gt;程序框架构建">
+<meta property="og:url" content="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/Gui/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="本次实习的目标是掌握Qt的IDE开发环境、Qt开发的基本框架，学习Qt示例工程imageviewer，掌握GUI程序的基本要素：视图、菜单、工具栏等。 目录 1. VS Qt Plugin 2. QtCreator 3. 示例代码  1. VS Qt PluginQt为VS安装了插件之后，VS菜单会出现Qt菜单项，界面如下： 2. QtCreatorQtCreator是类似VS的IDE开发环境。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cugwanghp.github.io/Pics/VS_QtPlugin.png">
+<meta property="og:image" content="https://cugwanghp.github.io/Pics/Qt_face.png">
+<meta property="og:image" content="https://cugwanghp.github.io/Pics/imageviewer.png">
+<meta property="article:published_time" content="2023-06-08T08:35:06.270Z">
+<meta property="article:modified_time" content="2023-06-08T10:41:37.089Z">
+<meta property="article:author" content="Wanghp">
+<meta property="article:tag" content="RS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cugwanghp.github.io/Pics/VS_QtPlugin.png">
+
+<link rel="canonical" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/Gui/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>实习<一>程序框架构建 | Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/Gui/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wanghp">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          实习<一>程序框架构建
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-06-08 16:35:06 / 修改时间：18:41:37" itemprop="dateCreated datePublished" datetime="2023-06-08T16:35:06+08:00">2023-06-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E8%AF%BE%E8%AE%BE/" itemprop="url" rel="index"><span itemprop="name">C++课设</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E8%AF%BE%E8%AE%BE/RSImage/" itemprop="url" rel="index"><span itemprop="name">RSImage</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本次实习的目标是掌握Qt的IDE开发环境、Qt开发的基本框架，学习Qt示例工程imageviewer，掌握GUI程序的基本要素：视图、菜单、工具栏等。</p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li><a href="">1. VS Qt Plugin</a></li>
+<li><a href="#1_QtCreator">2. QtCreator</a></li>
+<li><a href="#2_%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81ImageViewer">3. 示例代码</a></li>
+</ul>
+<h2 id="1-VS-Qt-Plugin"><a href="#1-VS-Qt-Plugin" class="headerlink" title="1. VS Qt Plugin"></a>1. VS Qt Plugin</h2><p>Qt为VS安装了插件之后，VS菜单会出现Qt菜单项，界面如下：<br><img src="/../Pics/VS_QtPlugin.png" alt="VS_Qt_Plugin"></p>
+<h2 id="2-QtCreator"><a href="#2-QtCreator" class="headerlink" title="2. QtCreator"></a>2. QtCreator</h2><p>QtCreator是类似VS的IDE开发环境。</p>
+<ul>
+<li>Qt开发界面<br><img src="/../Pics/Qt_face.png" alt="Qt开发界面"></li>
+</ul>
+<h2 id="3-示例代码ImageViewer"><a href="#3-示例代码ImageViewer" class="headerlink" title="3. 示例代码ImageViewer"></a>3. 示例代码ImageViewer</h2><h3 id="3-1-imageviewer-GUI"><a href="#3-1-imageviewer-GUI" class="headerlink" title="3.1 imageviewer GUI"></a>3.1 imageviewer GUI</h3><p><img src="/../Pics/imageviewer.png" alt="imageviewer"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">示例代码界面图</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-代码分析"><a href="#3-2-代码分析" class="headerlink" title="3.2 代码分析"></a>3.2 代码分析</h3><ol>
+<li>工程组织</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// imageviewer.cpp - imageviewer 实现</span></span><br><span class="line"><span class="comment">// imageviewer.h   - imageviewer 头文件</span></span><br><span class="line"><span class="comment">// imageviewer.pro - 工程文件</span></span><br><span class="line"><span class="comment">// main.cpp		   - 主程序main</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>代码分析</li>
+</ol>
+<ul>
+<li>main.cpp</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.cpp 是C++程序的唯一入口，定义了一个Qapplication对象，直至程序结束时返回。</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QApplication&gt;</span>				<span class="comment">//Qt Application</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QCommandLineParser&gt;</span>		<span class="comment">//Qt CommandLineParser， parse argv[]</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;imageviewer.h&quot;</span>			<span class="comment">//class imageviewer declartion</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span>	<span class="comment">//main function</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">QApplication <span class="title">app</span><span class="params">(argc, argv)</span></span>;	<span class="comment">//application</span></span><br><span class="line">    QGuiApplication::<span class="built_in">setApplicationDisplayName</span>(ImageViewer::<span class="built_in">tr</span>(<span class="string">&quot;Image Viewer&quot;</span>));	<span class="comment">//Set Application Title</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 可执行程序是可以带有参数调用的，如：imageviewer.exe d:/test.img 中的</span></span><br><span class="line">    <span class="comment">// d:/test.img 会存储在argv[1]中.</span></span><br><span class="line">    QCommandLineParser commandLineParser;</span><br><span class="line">    commandLineParser.<span class="built_in">addHelpOption</span>();</span><br><span class="line">    commandLineParser.<span class="built_in">addPositionalArgument</span>(ImageViewer::<span class="built_in">tr</span>(<span class="string">&quot;[file]&quot;</span>), ImageViewer::<span class="built_in">tr</span>(<span class="string">&quot;Image file to open.&quot;</span>));	<span class="comment">//bind the 1st parameters with open</span></span><br><span class="line">    commandLineParser.<span class="built_in">process</span>(QCoreApplication::<span class="built_in">arguments</span>());</span><br><span class="line">    </span><br><span class="line">    ImageViewer imageViewer;	<span class="comment">// imageviewer window to display one image</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 如果程序带有参数，则选择调用打开文件</span></span><br><span class="line">    <span class="keyword">if</span> (!commandLineParser.<span class="built_in">positionalArguments</span>().<span class="built_in">isEmpty</span>()</span><br><span class="line">        &amp;&amp; !imageViewer.<span class="built_in">loadFile</span>(commandLineParser.<span class="built_in">positionalArguments</span>().<span class="built_in">front</span>())) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    imageViewer.<span class="built_in">show</span>();		<span class="comment">//显示窗口</span></span><br><span class="line">    <span class="keyword">return</span> app.<span class="built_in">exec</span>();		<span class="comment">//运行程序，直到程序退出</span></span><br><span class="line">    <span class="comment">//思考：程序是如何做到一直运行的呢？？</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>imageviewer<br>imageviewer的主要功能是负责图像的显示，以imageviewer.h为例说明。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> IMAGEVIEWER_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> IMAGEVIEWER_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QMainWindow&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QImage&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> QT_NO_PRINTER</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QPrinter&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">QT_BEGIN_NAMESPACE</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">QAction</span>;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">QLabel</span>;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">QMenu</span>;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">QScrollArea</span>;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">QScrollBar</span>;</span><br><span class="line">QT_END_NAMESPACE</span><br><span class="line"></span><br><span class="line"><span class="comment">//! [0]</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ImageViewer</span> : <span class="keyword">public</span> QMainWindow</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">ImageViewer</span>();					<span class="comment">//构造函数</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">loadFile</span><span class="params">(<span class="type">const</span> QString &amp;)</span></span>;	<span class="comment">//加载图像</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//信号槽</span></span><br><span class="line"><span class="keyword">private</span> slots:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">open</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">saveAs</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">print</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">copy</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">paste</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">zoomIn</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">zoomOut</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">normalSize</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">fitToWindow</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">about</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">createActions</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">createMenus</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">updateActions</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">saveFile</span><span class="params">(<span class="type">const</span> QString &amp;fileName)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">setImage</span><span class="params">(<span class="type">const</span> QImage &amp;newImage)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">scaleImage</span><span class="params">(<span class="type">double</span> factor)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">adjustScrollBar</span><span class="params">(QScrollBar *scrollBar, <span class="type">double</span> factor)</span></span>;</span><br><span class="line"></span><br><span class="line">    QImage image;				<span class="comment">//用于绘制的图像对象，类似BITMAP</span></span><br><span class="line">    QLabel *imageLabel;			<span class="comment">//绘制图像的控件载体，类似Picture</span></span><br><span class="line">    QScrollArea *scrollArea;	<span class="comment">//滚动条</span></span><br><span class="line">    <span class="type">double</span> scaleFactor;			<span class="comment">//缩放比例</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> QT_NO_PRINTER</span></span><br><span class="line">    QPrinter printer;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    QAction *saveAsAct;</span><br><span class="line">    QAction *printAct;</span><br><span class="line">    QAction *copyAct;</span><br><span class="line">    QAction *zoomInAct;</span><br><span class="line">    QAction *zoomOutAct;</span><br><span class="line">    QAction *normalSizeAct;</span><br><span class="line">    QAction *fitToWindowAct;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//! [0]</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>imageviewer project</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">QT += widgets</span><br><span class="line"><span class="built_in">requires</span>(<span class="built_in">qtConfig</span>(filedialog))</span><br><span class="line"><span class="built_in">qtHaveModule</span>(printsupport): QT += printsupport</span><br><span class="line"></span><br><span class="line">HEADERS       = imageviewer.h</span><br><span class="line">SOURCES       = imageviewer.cpp \</span><br><span class="line">                main.cpp</span><br><span class="line"></span><br><span class="line"><span class="meta"># install</span></span><br><span class="line">target.path = $$[QT_INSTALL_EXAMPLES]/widgets/widgets/imageviewer</span><br><span class="line">INSTALLS += target</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-代码下载"><a href="#3-3-代码下载" class="headerlink" title="3.3 代码下载"></a>3.3 代码下载</h3><p>参见Qt <a href="../Code/imageviewer.rar">Image Viewer Example code download</a></p>
+<h3 id="3-4-参考文档"><a href="#3-4-参考文档" class="headerlink" title="3.4 参考文档"></a>3.4 参考文档</h3><ul>
+<li>学习<a target="_blank" rel="noopener" href="https://blog.csdn.net/Louis_815/article/details/54286544">Qt5基本教程</a>1序—-8.添加动作</li>
+</ul>
+<hr>
+<p>|<a target="_blank" rel="noopener" href="https://cugwhp.github.io/OOPCPP/CourseDesign/CourseDesignNew.html#%E8%AF%BE%E8%AE%BE%E5%86%85%E5%AE%B9">Home</a> | <a href="#%E7%9B%AE%E5%BD%95">Return</a>| <a href="./D0_Preparation.md">Prev</a> | <a href="./D2_FileIO.md">Next</a>|</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RS/" rel="tag"># RS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/08/OOPCPPD/docs/RSImage/Frame/" rel="prev" title="Day 1 - 程序框架与遥感图像基本概念">
+      <i class="fa fa-chevron-left"></i> Day 1 - 程序框架与遥感图像基本概念
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/06/08/OOPCPPD/docs/RSImage/ImageProcess/" rel="next" title="遥感图像处理功能">
+      遥感图像处理功能 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-VS-Qt-Plugin"><span class="nav-number">2.</span> <span class="nav-text">1. VS Qt Plugin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-QtCreator"><span class="nav-number">3.</span> <span class="nav-text">2. QtCreator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81ImageViewer"><span class="nav-number">4.</span> <span class="nav-text">3. 示例代码ImageViewer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-imageviewer-GUI"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 imageviewer GUI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 代码分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E4%BB%A3%E7%A0%81%E4%B8%8B%E8%BD%BD"><span class="nav-number">4.3.</span> <span class="nav-text">3.3 代码下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="nav-number">4.4.</span> <span class="nav-text">3.4 参考文档</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Wanghp</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wanghp</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

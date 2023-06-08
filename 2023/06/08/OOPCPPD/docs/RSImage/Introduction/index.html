@@ -20,19 +20,20 @@
     var CONFIG = {"hostname":"cugwanghp.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Compile OpenCVInstall OpenCVopenCV-minGW">
+  <meta name="description" content="此处将会说明完成此题所需要的工具、开发环境以及遥感图像数据。工欲善其事，必先利其器！！！  1. IDE Tools1.1 IDE环境C++的IDE环境众多，在不同操作系统下，均有不同的开发环境。为了方便程序的开发和调试，我们建议大家使用Windows操作系统来完成课程设计。尽管C++是跨操作系统的程序语言，但受界面库的影响，使用Windows会更方便。Windows下我们推荐如下几种IDE环境">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Blog">
-<meta property="og:url" content="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/openCV/index.html">
+<meta property="og:title" content="Day 0 - 准备工作">
+<meta property="og:url" content="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/Introduction/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:description" content="Compile OpenCVInstall OpenCVopenCV-minGW">
+<meta property="og:description" content="此处将会说明完成此题所需要的工具、开发环境以及遥感图像数据。工欲善其事，必先利其器！！！  1. IDE Tools1.1 IDE环境C++的IDE环境众多，在不同操作系统下，均有不同的开发环境。为了方便程序的开发和调试，我们建议大家使用Windows操作系统来完成课程设计。尽管C++是跨操作系统的程序语言，但受界面库的影响，使用Windows会更方便。Windows下我们推荐如下几种IDE环境">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-06-08T08:35:06.282Z">
-<meta property="article:modified_time" content="2020-11-24T08:07:05.412Z">
+<meta property="article:published_time" content="2023-06-08T08:35:06.275Z">
+<meta property="article:modified_time" content="2023-06-08T10:43:08.905Z">
 <meta property="article:author" content="Wanghp">
+<meta property="article:tag" content="RS">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/openCV/">
+<link rel="canonical" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/Introduction/">
 
 
 <script id="page-configurations">
@@ -45,7 +46,7 @@
   };
 </script>
 
-  <title> | Blog</title>
+  <title>Day 0 - 准备工作 | Blog</title>
   
 
 
@@ -160,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/openCV/">
+    <link itemprop="mainEntityOfPage" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/Introduction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -173,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          Day 0 - 准备工作
         </h1>
 
         <div class="post-meta">
@@ -182,16 +183,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2023-06-08 16:35:06" itemprop="dateCreated datePublished" datetime="2023-06-08T16:35:06+08:00">2023-06-08</time>
+              <time title="创建时间：2023-06-08 16:35:06 / 修改时间：18:43:08" itemprop="dateCreated datePublished" datetime="2023-06-08T16:35:06+08:00">2023-06-08</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-24 16:07:05" itemprop="dateModified" datetime="2020-11-24T16:07:05+08:00">2020-11-24</time>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
               </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E8%AF%BE%E8%AE%BE/" itemprop="url" rel="index"><span itemprop="name">C++课设</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E8%AF%BE%E8%AE%BE/RSImage/" itemprop="url" rel="index"><span itemprop="name">RSImage</span></a>
+                </span>
+            </span>
 
           
 
@@ -204,7 +212,39 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Compile-OpenCV"><a href="#Compile-OpenCV" class="headerlink" title="Compile OpenCV"></a>Compile OpenCV</h1><h2 id="Install-OpenCV"><a href="#Install-OpenCV" class="headerlink" title="Install OpenCV"></a>Install OpenCV</h2><p><a target="_blank" rel="noopener" href="https://www.kevinhughes.ca/tutorials/opencv-install-on-windows-with-codeblocks-and-mingw">openCV-minGW</a></p>
+        <blockquote>
+<p>此处将会说明完成此题所需要的工具、开发环境以及遥感图像数据。<strong>工欲善其事，必先利其器！！！</strong></p>
+</blockquote>
+<h2 id="1-IDE-Tools"><a href="#1-IDE-Tools" class="headerlink" title="1. IDE Tools"></a>1. IDE Tools</h2><h3 id="1-1-IDE环境"><a href="#1-1-IDE环境" class="headerlink" title="1.1 IDE环境"></a>1.1 IDE环境</h3><p>C++的IDE环境众多，在不同操作系统下，均有不同的开发环境。为了方便程序的开发和调试，我们建议大家使用<strong>Windows</strong>操作系统来完成课程设计。尽管C++是跨操作系统的程序语言，但受界面库的影响，使用Windows会更方便。Windows下我们推荐如下几种IDE环境：</p>
+<ol>
+<li><p>IDE的首选 - <a target="_blank" rel="noopener" href="https://visualstudio.microsoft.com/zh-hans/vs/community/">Visual Studio &gt;2017</a></p>
+<blockquote>
+<p>Visual Studio 是 Microsoft 出品的强大IDE，安装VS全家桶，几乎不用担心缺少库的情况。最佳版本是当前日期前2年的产品，会比较问题，奇葩问题会比较少，推荐VS2017 和 VS2019版本。</p>
+</blockquote>
+</li>
+<li><p>IDE的次选 - <a target="_blank" rel="noopener" href="https://code.visualstudio.com/">Visual Code</a></p>
+<blockquote>
+<p>Visual Studio Code 也是 microsoft出品的开源编辑器，相比VS，VSCode具有小巧轻便、配置灵活的特点，只适合有<strong>一定计算机基础的同学</strong>，否则容易崩溃。VSCode的配置参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/YY_hide_on_bush/article/details/116752635?utm_source=app&app_version=4.9.3&code=app_1562916241&uLinkId=usr1mkqgl919blen">VSCode C++配置</a>。</p>
+</blockquote>
+</li>
+<li><p>IDE的其他选择 - <a target="_blank" rel="noopener" href="http://download.qt.io/archive/qt/5.10/5.10.1/qt-opensource-windows-x86-5.10.1.exe">Qt Creator</a></p>
+<blockquote>
+<p>Qt 是 Nokia 提供的开源IDE环境，Qt是一套跨平台的C++界面库，借助于Qt可以开发出精美的GUI程序。Qt也只适合有<strong>一定计算机基础</strong>的同学使用，Qt配置参考<a href="./QtSetup.md">Qt的安装</a>。</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="1-2-EasyX图形库"><a href="#1-2-EasyX图形库" class="headerlink" title="1.2 EasyX图形库"></a>1.2 <a target="_blank" rel="noopener" href="http://easyx.cn/">EasyX图形库</a></h3><blockquote>
+<p>EasyX是一个简单易用的图形库，登录<a target="_blank" rel="noopener" href="http://easyx.cn/">EasyX</a>官网首页，可以找到EasyX的<a target="_blank" rel="noopener" href="https://easyx.cn/download/EasyX_20210719.exe">安装程序</a>和<a target="_blank" rel="noopener" href="https://docs.easyx.cn/zh-cn/intro">帮助文档</a>。若选择Visual Studio为IDE，整个安装和配置过程不到一分钟即可完成，若选择Visual Code为IDE，则需要一定的<a target="_blank" rel="noopener" href="https://blog.csdn.net/YY_hide_on_bush/article/details/116752635?utm_source=app&app_version=4.9.3&code=app_1562916241&uLinkId=usr1mkqgl919blen">配置过程</a>。</p>
+</blockquote>
+<h3 id="1-3-下载示例数据"><a href="#1-3-下载示例数据" class="headerlink" title="1.3 下载示例数据"></a>1.3 下载示例数据</h3><blockquote>
+<p>为了测试程序功能，特准备了一组遥感图像数据，可通过此链接下载<a href="../../data/rsimage.zip">遥感测试数据</a>。</p>
+</blockquote>
+<h3 id="1-4-FWTools"><a href="#1-4-FWTools" class="headerlink" title="1.4 FWTools"></a>1.4 <a target="_blank" rel="noopener" href="http://home.gdal.org/fwtools/FWTools247.exe">FWTools</a></h3><blockquote>
+<p>遥感图像数据不能用常用的图像查看工具打开，为了方便查看遥感数据的信息、显示，可下载开源的<a target="_blank" rel="noopener" href="http://home.gdal.org/fwtools/FWTools247.exe">遥感图像显示工具-FWTools</a>，有关FWTools的使用可查看<a href="../../refs/OpenEV_Manual.pptx">FWTools说明</a>。</p>
+</blockquote>
+<hr>
+<p>准备工作包括：<strong>安装IDE、下载安装EasyX库、下载遥感测试数据、下载FWTools查看遥感图像</strong>。你准备好了吗？</p>
+<hr>
 
     </div>
 
@@ -213,6 +253,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RS/" rel="tag"># RS</a>
+          </div>
 
         
 
@@ -220,12 +263,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/06/08/OOPCPPD/docs/RSImage/Menu/" rel="prev" title="实习<二>显示遥感图像">
-      <i class="fa fa-chevron-left"></i> 实习<二>显示遥感图像
+    <a href="/2023/06/08/OOPCPPD/docs/RSImage/Information/" rel="prev" title="Day 3 - Image Information">
+      <i class="fa fa-chevron-left"></i> Day 3 - Image Information
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/06/08/OOPCPPD/docs/RSImage/QtSetup/" rel="next" title="Qt Setup">
-      Qt Setup <i class="fa fa-chevron-right"></i>
+    <a href="/2023/06/08/OOPCPPD/docs/RSImage/Menu/" rel="next" title="实习<二>显示遥感图像">
+      实习<二>显示遥感图像 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -285,7 +328,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Compile-OpenCV"><span class="nav-number">1.</span> <span class="nav-text">Compile OpenCV</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-OpenCV"><span class="nav-number">1.1.</span> <span class="nav-text">Install OpenCV</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-IDE-Tools"><span class="nav-number">1.</span> <span class="nav-text">1. IDE Tools</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-IDE%E7%8E%AF%E5%A2%83"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 IDE环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-EasyX%E5%9B%BE%E5%BD%A2%E5%BA%93"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 EasyX图形库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E4%B8%8B%E8%BD%BD%E7%A4%BA%E4%BE%8B%E6%95%B0%E6%8D%AE"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 下载示例数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-FWTools"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 FWTools</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

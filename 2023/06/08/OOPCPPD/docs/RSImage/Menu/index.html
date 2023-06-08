@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"cugwanghp.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="通过实习&lt;一&gt;的程序，我们已经能够掌握常用图像的IO、显示。本次实习，我们的重点是读取遥感图像，并将其显示在imageviewer中。 目录 目录 1. CRSImage回顾 2. 扩展ImageViewer对CRSImage的支持 2.1 图像显示代码分析 2.2 如何嵌入CRSImage    1. CRSImage回顾以CRSImage的代码为例，之前我们的CRSImage类中，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实习&lt;二&gt;显示遥感图像">
+<meta property="og:url" content="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/Menu/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="通过实习&lt;一&gt;的程序，我们已经能够掌握常用图像的IO、显示。本次实习，我们的重点是读取遥感图像，并将其显示在imageviewer中。 目录 目录 1. CRSImage回顾 2. 扩展ImageViewer对CRSImage的支持 2.1 图像显示代码分析 2.2 如何嵌入CRSImage    1. CRSImage回顾以CRSImage的代码为例，之前我们的CRSImage类中，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-08T08:35:06.279Z">
+<meta property="article:modified_time" content="2023-06-08T10:43:26.876Z">
+<meta property="article:author" content="Wanghp">
+<meta property="article:tag" content="RS">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/Menu/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>实习<二>显示遥感图像 | Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/Menu/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wanghp">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          实习<二>显示遥感图像
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-06-08 16:35:06 / 修改时间：18:43:26" itemprop="dateCreated datePublished" datetime="2023-06-08T16:35:06+08:00">2023-06-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E8%AF%BE%E8%AE%BE/" itemprop="url" rel="index"><span itemprop="name">C++课设</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-%E8%AF%BE%E8%AE%BE/RSImage/" itemprop="url" rel="index"><span itemprop="name">RSImage</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>通过实习&lt;一&gt;的程序，我们已经能够掌握常用图像的IO、显示。本次实习，我们的重点是读取遥感图像，并将其显示在imageviewer中。</p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li><a href="#%E7%9B%AE%E5%BD%95">目录</a></li>
+<li><a href="#1-crsimage%E5%9B%9E%E9%A1%BE">1. CRSImage回顾</a></li>
+<li><a href="#2-%E6%89%A9%E5%B1%95imageviewer%E5%AF%B9crsimage%E7%9A%84%E6%94%AF%E6%8C%81">2. 扩展ImageViewer对CRSImage的支持</a><ul>
+<li><a href="#21-%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90">2.1 图像显示代码分析</a></li>
+<li><a href="#22-%E5%A6%82%E4%BD%95%E5%B5%8C%E5%85%A5crsimage">2.2 如何嵌入CRSImage</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="1-CRSImage回顾"><a href="#1-CRSImage回顾" class="headerlink" title="1. CRSImage回顾"></a>1. CRSImage回顾</h2><p>以CRSImage的代码为例，之前我们的CRSImage类中，已经完成了图像文件的读取，读取的图像数据放置在一个三维的素组m_pppData中。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CRSImage</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">char</span>	DataType;	<span class="comment">//typedef 定义数据类型别名</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//------------------- 构造/析构函数 -----------------------//</span></span><br><span class="line">	<span class="built_in">CRSImage</span>();</span><br><span class="line">	<span class="built_in">CRSImage</span>(<span class="type">const</span> CRSImage&amp; img);</span><br><span class="line">	~<span class="built_in">CRSImage</span>();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//-------------------------- Operations ------------------------------//</span></span><br><span class="line">	<span class="function"><span class="type">bool</span>	<span class="title">Open</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* lpstrPath)</span></span>;	<span class="comment">//打开文件，传入文件路径，读取数据到内存变量</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">//--------------- 内联函数，获取图像属性值 --------------------//</span></span><br><span class="line">	<span class="function"><span class="keyword">inline</span> DataType*** <span class="title">GetDataBuffer</span><span class="params">()</span> <span class="type">const</span> </span>&#123;<span class="keyword">return</span> m_pppData;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="comment">// 读文件</span></span><br><span class="line">	<span class="function"><span class="type">bool</span>	<span class="title">ReadMetaData</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* lpstrMetaFilePath)</span></span>;	<span class="comment">//元数据文件</span></span><br><span class="line">	<span class="function"><span class="type">bool</span>	<span class="title">InitBuffer</span><span class="params">(<span class="type">void</span>)</span></span>;								<span class="comment">//初始化内存</span></span><br><span class="line">	<span class="function"><span class="type">bool</span>	<span class="title">ReadImgData</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* lpstrImgFilePath)</span></span>;		<span class="comment">//读图像文件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="comment">//--------------------- 成员变量 --------------------------//</span></span><br><span class="line">	DataType***		m_pppData;		<span class="comment">//指针记录三维数组首地址</span></span><br><span class="line">	<span class="type">int</span>				m_nBands;		<span class="comment">//波段数</span></span><br><span class="line">	<span class="type">int</span>				m_nLines;		<span class="comment">//行数</span></span><br><span class="line">	<span class="type">int</span>				m_nSamples;		<span class="comment">//列数</span></span><br><span class="line">	INTERLEAVE_TYPE m_eInterleave;	<span class="comment">//数据存储类型BSQ/BIL/BIP</span></span><br><span class="line">	<span class="type">short</span>       m_nDataType;		<span class="comment">//数据类型</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-扩展ImageViewer对CRSImage的支持"><a href="#2-扩展ImageViewer对CRSImage的支持" class="headerlink" title="2. 扩展ImageViewer对CRSImage的支持"></a>2. 扩展ImageViewer对CRSImage的支持</h2><h3 id="2-1-图像显示代码分析"><a href="#2-1-图像显示代码分析" class="headerlink" title="2.1 图像显示代码分析"></a>2.1 图像显示代码分析</h3><p>分析iamgeviewer工程不难发现，图像显示的代码集中在imageviewer类中，所涉及的函数主要有：loadFile和setImage。</p>
+<ul>
+<li>loadFile()<br>loadFile函数的意思，显而易见是读取图像文件，我们分析代码发现，Qt提供了一个类QImageReader类，调用read()函数，可以返回一个QImage对象。然后将调用setImage()即完成了图像的显示。源代码如下：</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">ImageViewer::loadFile</span><span class="params">(<span class="type">const</span> QString &amp;fileName)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// QImageReader负责传入文件名，调用read，即返回QImage对象</span></span><br><span class="line">	<span class="comment">// 试想，CRSImage可否担当此功能呢？？</span></span><br><span class="line">    <span class="function">QImageReader <span class="title">reader</span><span class="params">(fileName)</span></span>;</span><br><span class="line">    reader.<span class="built_in">setAutoTransform</span>(<span class="literal">true</span>);</span><br><span class="line">    <span class="type">const</span> QImage newImage = reader.<span class="built_in">read</span>();	<span class="comment">//返回QImage对象</span></span><br><span class="line">    <span class="keyword">if</span> (newImage.<span class="built_in">isNull</span>()) &#123;</span><br><span class="line">        QMessageBox::<span class="built_in">information</span>(<span class="keyword">this</span>, QGuiApplication::<span class="built_in">applicationDisplayName</span>(),</span><br><span class="line">                                 <span class="built_in">tr</span>(<span class="string">&quot;Cannot load %1: %2&quot;</span>)</span><br><span class="line">                                 .<span class="built_in">arg</span>(QDir::<span class="built_in">toNativeSeparators</span>(fileName), reader.<span class="built_in">errorString</span>()));</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">setImage</span>(newImage);	<span class="comment">//绘制QImage</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 更新有关图像的状态信息</span></span><br><span class="line">    <span class="built_in">setWindowFilePath</span>(fileName);	<span class="comment">//更改标题</span></span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> QString message = <span class="built_in">tr</span>(<span class="string">&quot;Opened \&quot;%1\&quot;, %2x%3, Depth: %4&quot;</span>)</span><br><span class="line">        .<span class="built_in">arg</span>(QDir::<span class="built_in">toNativeSeparators</span>(fileName)).<span class="built_in">arg</span>(image.<span class="built_in">width</span>()).<span class="built_in">arg</span>(image.<span class="built_in">height</span>()).<span class="built_in">arg</span>(image.<span class="built_in">depth</span>());</span><br><span class="line">    <span class="built_in">statusBar</span>()-&gt;<span class="built_in">showMessage</span>(message);	<span class="comment">//更改状态栏</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>setImage()<br>setImage负责将QImage对象绘制在imageLabel上，代码如下：</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ImageViewer::setImage</span><span class="params">(<span class="type">const</span> QImage &amp;newImage)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    image = newImage;	<span class="comment">//QImage</span></span><br><span class="line">    imageLabel-&gt;<span class="built_in">setPixmap</span>(QPixmap::<span class="built_in">fromImage</span>(image));	<span class="comment">//QImage -&gt; QPixmap</span></span><br><span class="line"><span class="comment">//! [4]</span></span><br><span class="line">    scaleFactor = <span class="number">1.0</span>;	<span class="comment">//显示比例</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 更新相关的UI状态</span></span><br><span class="line">    scrollArea-&gt;<span class="built_in">setVisible</span>(<span class="literal">true</span>);</span><br><span class="line">    printAct-&gt;<span class="built_in">setEnabled</span>(<span class="literal">true</span>);</span><br><span class="line">    fitToWindowAct-&gt;<span class="built_in">setEnabled</span>(<span class="literal">true</span>);</span><br><span class="line">    <span class="built_in">updateActions</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!fitToWindowAct-&gt;<span class="built_in">isChecked</span>())</span><br><span class="line">        imageLabel-&gt;<span class="built_in">adjustSize</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-如何嵌入CRSImage"><a href="#2-2-如何嵌入CRSImage" class="headerlink" title="2.2 如何嵌入CRSImage"></a>2.2 如何嵌入CRSImage</h3><p>从上面的分析可知，嵌入CRSImage的关键是，将CRSImage读入的图像数据（三维数组）转换为QImage。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">CImageDisplayDlg::ShowRaster</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">     <span class="type">int</span> band_list[<span class="number">3</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;  </span><br><span class="line">	<span class="type">int</span>		iImageWidth;		<span class="comment">//图像的宽度</span></span><br><span class="line">	</span><br><span class="line">    iImageWidth = (iImageWidth*<span class="number">8</span>+<span class="number">31</span>)/<span class="number">32</span>*<span class="number">4</span>;  <span class="comment">//按4字节对齐...</span></span><br><span class="line">  </span><br><span class="line">	<span class="comment">// 图像数据</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span>* pBuffer = <span class="keyword">new</span> <span class="type">unsigned</span> <span class="type">char</span>[iScaleWidth*iScaleHeight*dataBands];  </span><br><span class="line">   </span><br><span class="line">	<span class="comment">// 波段组合。。。</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">char</span>* pDataBuffer = <span class="literal">NULL</span>;  </span><br><span class="line">    <span class="keyword">if</span> (dataBands &gt;=<span class="number">3</span> )  </span><br><span class="line">    &#123;  </span><br><span class="line">        pDataBuffer = pBuffer;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">else</span>  </span><br><span class="line">    &#123;  </span><br><span class="line">        pDataBuffer = <span class="keyword">new</span> <span class="type">unsigned</span> <span class="type">char</span>[iImageWidth*iImageHeight*<span class="number">3</span>];  </span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i&lt;iImageWidth*iImageHeight*<span class="number">3</span>; i++)  </span><br><span class="line">            pDataBuffer[i] = pBuffer[i/<span class="number">3</span>];  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">delete</span> []pBuffer;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">	<span class="comment">// 构建QImage对象</span></span><br><span class="line">    <span class="function">QImage <span class="title">QImg</span><span class="params">(pDataBuffer, iImageWidth, iImageHeight, QImage::Format_RGB888)</span></span>;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>|<a target="_blank" rel="noopener" href="https://cugwhp.github.io/OOPCPP/CourseDesign/CourseDesignNew.html#%E8%AF%BE%E8%AE%BE%E5%86%85%E5%AE%B9">Home</a> | <a href="#%E7%9B%AE%E5%BD%95">Return</a>| <a href="./D1_Frame.md">Prev</a> | <a href="./D3_Information.md">Next</a>|</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RS/" rel="tag"># RS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/08/OOPCPPD/docs/RSImage/Introduction/" rel="prev" title="Day 0 - 准备工作">
+      <i class="fa fa-chevron-left"></i> Day 0 - 准备工作
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/06/08/OOPCPPD/docs/RSImage/openCV/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-CRSImage%E5%9B%9E%E9%A1%BE"><span class="nav-number">2.</span> <span class="nav-text">1. CRSImage回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%89%A9%E5%B1%95ImageViewer%E5%AF%B9CRSImage%E7%9A%84%E6%94%AF%E6%8C%81"><span class="nav-number">3.</span> <span class="nav-text">2. 扩展ImageViewer对CRSImage的支持</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E5%9B%BE%E5%83%8F%E6%98%BE%E7%A4%BA%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 图像显示代码分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%A6%82%E4%BD%95%E5%B5%8C%E5%85%A5CRSImage"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 如何嵌入CRSImage</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Wanghp</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wanghp</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

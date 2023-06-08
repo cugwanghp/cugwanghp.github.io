@@ -20,20 +20,25 @@
     var CONFIG = {"hostname":"cugwanghp.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="在控制台显示图像的基本信息。  [TOC] 功能 了解图像的基本信息包括哪些？ 格式化输出相应的信息，可以参考ENVI等相关的商用软件12345678910111213141516171819ENVIdescription &#x3D; &amp;#123;  Canon City, Colorado, Landsat TM, Calibrated to Reflectance &amp;#125;samples &#x3D; 6">
+  <meta name="description" content="本次实习完成几个图像处理算法，主要有：图像旋转、图像缩放、图像滤波等。要求参数使用对话框输入、输出结果能在视图上有所反映。 功能列表统计信息显示统计每个波段的最大值、最小值、均值、方差、直方图以图形化界面展示出来。 统计值 界面参考工程frozencolumn Project  直方图将直方图以折线图的方式予以展现。有关界面参考如下：  lineChart   lineChart Project">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Day 3 - Image Information">
-<meta property="og:url" content="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/Information/index.html">
+<meta property="og:title" content="遥感图像处理功能">
+<meta property="og:url" content="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/ImageProcess/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:description" content="在控制台显示图像的基本信息。  [TOC] 功能 了解图像的基本信息包括哪些？ 格式化输出相应的信息，可以参考ENVI等相关的商用软件12345678910111213141516171819ENVIdescription &#x3D; &amp;#123;  Canon City, Colorado, Landsat TM, Calibrated to Reflectance &amp;#125;samples &#x3D; 6">
+<meta property="og:description" content="本次实习完成几个图像处理算法，主要有：图像旋转、图像缩放、图像滤波等。要求参数使用对话框输入、输出结果能在视图上有所反映。 功能列表统计信息显示统计每个波段的最大值、最小值、均值、方差、直方图以图形化界面展示出来。 统计值 界面参考工程frozencolumn Project  直方图将直方图以折线图的方式予以展现。有关界面参考如下：  lineChart   lineChart Project">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-06-08T08:35:06.274Z">
-<meta property="article:modified_time" content="2023-06-08T10:42:27.522Z">
+<meta property="og:image" content="https://cugwanghp.github.io/Pics/Qt_linechart.png">
+<meta property="og:image" content="https://cugwanghp.github.io/Pics/Qt_splinechart.png">
+<meta property="og:image" content="https://cugwanghp.github.io/Pics/Qt_widget.png">
+<meta property="og:image" content="https://cugwanghp.github.io/Pics/Qt_widget_video.png">
+<meta property="article:published_time" content="2023-06-08T08:35:06.272Z">
+<meta property="article:modified_time" content="2023-06-08T10:41:49.725Z">
 <meta property="article:author" content="Wanghp">
 <meta property="article:tag" content="RS">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cugwanghp.github.io/Pics/Qt_linechart.png">
 
-<link rel="canonical" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/Information/">
+<link rel="canonical" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/ImageProcess/">
 
 
 <script id="page-configurations">
@@ -46,7 +51,7 @@
   };
 </script>
 
-  <title>Day 3 - Image Information | Blog</title>
+  <title>遥感图像处理功能 | Blog</title>
   
 
 
@@ -161,7 +166,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/Information/">
+    <link itemprop="mainEntityOfPage" href="https://cugwanghp.github.io/2023/06/08/OOPCPPD/docs/RSImage/ImageProcess/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -174,7 +179,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Day 3 - Image Information
+          遥感图像处理功能
         </h1>
 
         <div class="post-meta">
@@ -185,7 +190,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-06-08 16:35:06 / 修改时间：18:42:27" itemprop="dateCreated datePublished" datetime="2023-06-08T16:35:06+08:00">2023-06-08</time>
+              <time title="创建时间：2023-06-08 16:35:06 / 修改时间：18:41:49" itemprop="dateCreated datePublished" datetime="2023-06-08T16:35:06+08:00">2023-06-08</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -212,15 +217,42 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <blockquote>
-<p>在控制台显示图像的基本信息。</p>
-</blockquote>
-<p>[TOC]</p>
-<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><ol>
-<li>了解图像的基本信息包括哪些？</li>
-<li>格式化输出相应的信息，可以参考ENVI等相关的商用软件<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">ENVI</span><br><span class="line">description = &#123;</span><br><span class="line">  Canon City, Colorado, Landsat TM, Calibrated to Reflectance &#125;</span><br><span class="line">samples = 640</span><br><span class="line">lines   = 400</span><br><span class="line">bands   = 6</span><br><span class="line">header offset = 0</span><br><span class="line">file type = ENVI Standard</span><br><span class="line">data type = 1</span><br><span class="line">interleave = bsq</span><br><span class="line">sensor type = Landsat TM</span><br><span class="line">wavelength units = Micrometers</span><br><span class="line">z plot range = &#123;0.00, 100.00&#125;</span><br><span class="line">z plot titles = &#123;Wavelength, Reflectance&#125;</span><br><span class="line">default stretch = 2.0% linear</span><br><span class="line">band names = &#123;</span><br><span class="line"> TM Band 1, TM Band 2, TM Band 3, TM Band 4, TM Band 5, TM Band 7&#125;</span><br><span class="line">wavelength = &#123;</span><br><span class="line"> 0.48500, 0.56000, 0.66000, 0.83000, 1.65000, 2.21500&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-<p>Go To <a href="./Subject.md">课设题目</a></p>
+        <p>本次实习完成几个图像处理算法，主要有：图像旋转、图像缩放、图像滤波等。要求参数使用对话框输入、输出结果能在视图上有所反映。</p>
+<h2 id="功能列表"><a href="#功能列表" class="headerlink" title="功能列表"></a>功能列表</h2><h3 id="统计信息显示"><a href="#统计信息显示" class="headerlink" title="统计信息显示"></a>统计信息显示</h3><p>统计每个波段的最大值、最小值、均值、方差、直方图以图形化界面展示出来。</p>
+<h4 id="统计值"><a href="#统计值" class="headerlink" title="统计值"></a>统计值</h4><ul>
+<li>界面参考工程<a href="../Code/frozencolumn">frozencolumn Project</a></li>
+</ul>
+<h4 id="直方图"><a href="#直方图" class="headerlink" title="直方图"></a>直方图</h4><p>将直方图以折线图的方式予以展现。有关界面参考如下：</p>
+<ul>
+<li>lineChart</li>
+</ul>
+<p><img src="/../Pics/Qt_linechart.png" alt="lineChart"></p>
+<p><a href="../Code/lineChart">lineChart Project</a></p>
+<ul>
+<li>splineChart</li>
+</ul>
+<p><img src="/../Pics/Qt_splinechart.png" alt="splineChart"></p>
+<p><a href="../Code/splineChart">splineChart Project</a></p>
+<h3 id="显示图像基本信息"><a href="#显示图像基本信息" class="headerlink" title="显示图像基本信息"></a>显示图像基本信息</h3><p>将图像的基本信息显示在对话框中，基本信息包括：图像行列值、投影参数及元数据信息等。<br>此部分的实习内容相对容易，即将CRSImage中读取的图像的基本信息显示在对话框中，具体的内容参考Qt控件的使用。<br>具体可参考：</p>
+<ul>
+<li>[Qt Widget Demo]<br><img src="/../Pics/Qt_widget.png" alt="Qt_Widget"><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Qt Widget Demo</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><img src="/../Pics/Qt_widget_video.png" alt="Qt_Widget_Video"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Qt Widget Video</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Qt入门-<a target="_blank" rel="noopener" href="https://www.devbean.net/2012/09/qt-study-road-2-dialogs-intro/">对话框简介</a></li>
+<li>Qt入门-<a target="_blank" rel="noopener" href="https://www.devbean.net/2012/09/qt-study-road-2-data-between-dialogs/">对话框数据传递</a></li>
+<li>Qt入门-<a target="_blank" rel="noopener" href="https://www.devbean.net/2012/09/qt-study-road-2-standard-dialogs-qmessagebox/">标准对话框 QMessageBox</a></li>
+</ul>
+<h3 id="R-–-Rotate-Image"><a href="#R-–-Rotate-Image" class="headerlink" title="R – Rotate Image"></a><strong>R – Rotate Image</strong></h3><p><strong>功能描述：</strong>点击菜单<strong>图像旋转</strong>，弹出对话框，输入旋转角度（0-360°），实现图像逆时针旋转指定角度，并将结果显示在窗口中。</p>
+<p><strong>程序流程：</strong>1）弹出对话框，输入旋转角度（0—360°）；2）旋转图像；3）显示旋转后图像。</p>
+<h3 id="F-–-Filter"><a href="#F-–-Filter" class="headerlink" title="F – Filter"></a><strong>F – Filter</strong></h3><p><strong>功能描述：</strong>点击菜单**滤波(Filter…)**，提示输入滤波核，执行图像卷积。</p>
+<p><strong>程序流程：</strong>1）弹出对话框，输入滤波核；2）执行图像卷积；3）显示滤波后结果图像。</p>
+<h3 id="C-–Close-Image"><a href="#C-–Close-Image" class="headerlink" title="C –Close Image"></a><strong>C –Close Image</strong></h3><p><strong>功能描述：</strong>点击菜单<strong>关闭</strong>，关闭当前打开的文件，图像窗口关闭。</p>
+<p><strong>程序流程：</strong>释放图像数据存储空间，擦除图像窗口。</p>
+<hr>
+<p>|<a target="_blank" rel="noopener" href="https://cugwhp.github.io/OOPCPP/CourseDesign/CourseDesignNew.html#%E8%AF%BE%E8%AE%BE%E5%86%85%E5%AE%B9">Home</a> | <a href="#%E5%8A%9F%E8%83%BD%E5%88%97%E8%A1%A8">Return</a>| <a href="./D4_Statistics.md">Prev</a> |</p>
 
     </div>
 
@@ -239,12 +271,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/06/08/OOPCPPD/docs/RSImage/ImageProcess/" rel="prev" title="遥感图像处理功能">
-      <i class="fa fa-chevron-left"></i> 遥感图像处理功能
+    <a href="/2023/06/08/OOPCPPD/docs/RSImage/Gui/" rel="prev" title="实习<一>程序框架构建">
+      <i class="fa fa-chevron-left"></i> 实习<一>程序框架构建
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/06/08/OOPCPPD/docs/RSImage/Introduction/" rel="next" title="Day 0 - 准备工作">
-      Day 0 - 准备工作 <i class="fa fa-chevron-right"></i>
+    <a href="/2023/06/08/OOPCPPD/docs/RSImage/Information/" rel="next" title="Day 3 - Image Information">
+      Day 3 - Image Information <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -304,7 +336,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD"><span class="nav-number">1.</span> <span class="nav-text">功能</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E5%88%97%E8%A1%A8"><span class="nav-number">1.</span> <span class="nav-text">功能列表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1%E4%BF%A1%E6%81%AF%E6%98%BE%E7%A4%BA"><span class="nav-number">1.1.</span> <span class="nav-text">统计信息显示</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1%E5%80%BC"><span class="nav-number">1.1.1.</span> <span class="nav-text">统计值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B4%E6%96%B9%E5%9B%BE"><span class="nav-number">1.1.2.</span> <span class="nav-text">直方图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E5%9B%BE%E5%83%8F%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-number">1.2.</span> <span class="nav-text">显示图像基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#R-%E2%80%93-Rotate-Image"><span class="nav-number">1.3.</span> <span class="nav-text">R – Rotate Image</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#F-%E2%80%93-Filter"><span class="nav-number">1.4.</span> <span class="nav-text">F – Filter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-%E2%80%93Close-Image"><span class="nav-number">1.5.</span> <span class="nav-text">C –Close Image</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
